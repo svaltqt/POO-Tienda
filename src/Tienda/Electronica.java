@@ -37,4 +37,8 @@ public class Electronica extends Producto implements Envio{
             return 0;
         }
     }
+    @Override
+    public String toString() {
+        return "Nombre: " + this.getNombre() + "\nPrecio: " + this.getPrecio() + "\nMarca: " + this.getMarca()  + "\nCosto de envío: " + calcularCosteEnvio() + "\n";
+    }
 }

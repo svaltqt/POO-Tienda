@@ -44,4 +44,9 @@ public class Libro extends Producto implements Envio {
             return 0;
         }
     }
+
+    @Override
+    public String toString() {
+        return "Nombre: " + this.getNombre() + "\nPrecio: " + this.getPrecio() + "\nAutor: " + this.getAutor() + "\nAño: " + this.getAnno() + "\nCosto de envío: " + calcularCosteEnvio() + "\n";
+    }
 }

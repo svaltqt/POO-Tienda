@@ -9,6 +9,7 @@ public class Main {
         ArrayList<Ropa> listaRopa = new ArrayList<Ropa>();
         ArrayList<Libro> listaLibro = new ArrayList<Libro>();
         ArrayList<Electronica> listaElectronica = new ArrayList<Electronica>();
+        ArrayList<Float> costosDeEnvio = new ArrayList<>();
 
         Scanner leer = new Scanner(System.in);
 
@@ -17,6 +18,7 @@ public class Main {
         boolean seguir = true;
 
         while (seguir) {
+
 
             System.out.println("Elije la opción que desea agregar\n" +
                     "1. Ingresar Ropa\n" +
@@ -39,7 +41,9 @@ public class Main {
                     String tipoTalla = leer.nextLine();
 
                     Ropa prenda = new Ropa(nombreRopa, precioRopa, tipoTalla);
+                    costosDeEnvio.add((float) prenda.calcularCosteEnvio());
                     listaRopa.add(prenda);
+
                     break;
 
                 case 2:
@@ -56,7 +60,10 @@ public class Main {
                     int annoLibro = Integer.parseInt(leer.nextLine());
 
                     Libro libro1 = new Libro(nombreLibro, precioLibro, autorLibro, annoLibro);
+                    costosDeEnvio.add((float) libro1.calcularCosteEnvio());
                     listaLibro.add(libro1);
+
+
                     break;
 
                 case 3:
@@ -70,12 +77,13 @@ public class Main {
                     float precioElectro = Float.parseFloat(leer.nextLine());
 
                     Electronica electro = new Electronica(nombreElectro, precioElectro, nombreMarca);
+                    costosDeEnvio.add((float) electro.calcularCosteEnvio());
                     listaElectronica.add(electro);
                     break;
 
                 case 4:
                     System.out.println("Salir");
-                    seguir = false; // Termina el bucle
+                    seguir = false;
                     break;
 
                 default:
@@ -86,38 +94,44 @@ public class Main {
             String continuar = leer.nextLine();
 
             if (continuar.equalsIgnoreCase("no")) {
-                seguir = false; // Termina el bucle
+                seguir = false;
             }
         }
 
-        System.out.println("\nLista de Productos de Ropa:\n");
-        if (listaRopa.isEmpty()) {
-            System.out.println("No hay Productos de Ropa registrados");
-        } else {
-            for (Ropa prenda : listaRopa) {
-                System.out.println("Ropa:\n");
-                prenda.calcularPrecio();
-            }
-        }
+        mostrarFactura("Productos de Ropa", listaRopa);
+        mostrarFactura("Productos de Libros", listaLibro);
+        mostrarFactura("Productos de Electrónica", listaElectronica);
 
-        System.out.println("\nLista de Libros:\n");
-        if (listaLibro.isEmpty()) {
-            System.out.println("No hay Libros registrados");
-        } else {
-            for (Libro libro1 : listaLibro) {
-                System.out.println("Libros:\n");
-                libro1.calcularPrecio();
-            }
-        }
+        System.out.println("Total de la compra: " +
+                calcularTotalCompra(listaRopa, listaLibro, listaElectronica));
 
-        System.out.println("\nLista de Productos de Electrónica:\n");
-        if (listaElectronica.isEmpty()) {
-            System.out.println("No hay Productos de Electrónica registrados");
+    }
+
+    public static void mostrarFactura(String titulo, ArrayList<?> listaProductos) {
+        System.out.println("\n" + titulo + ": \n");
+        if (listaProductos.isEmpty()) {
+            System.out.println("No hay productos de "+titulo +" registrados");
         } else {
-            for (Electronica electro : listaElectronica) {
-                System.out.println("Electrónicos:\n");
-                electro.calcularPrecio();
+            for (Object producto : listaProductos) {
+                System.out.println(producto.toString());
             }
         }
     }
+    public static float calcularTotalCompra(ArrayList<Ropa> listaRopa, ArrayList<Libro> listaLibro, ArrayList<Electronica> listaElectronica) {
+        float totalCompra = 0.0f;
+
+
+        for (Ropa prenda : listaRopa) {
+            totalCompra += prenda.getPrecio() + prenda.calcularCosteEnvio();
+        }
+        for (Libro libro : listaLibro) {
+            totalCompra += libro.getPrecio() + libro.calcularCosteEnvio();
+        }
+        for (Electronica electro : listaElectronica) {
+            totalCompra += electro.getPrecio() + electro.calcularCosteEnvio();
+        }
+
+        return totalCompra;
+    }
+
 }
